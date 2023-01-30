@@ -11,9 +11,10 @@ function displayDay() {
 }
 
 function renderTimeBlocks() {
+for (let i = 9; i < 18; i++) {
     let row = $("<div>").addClass("row input-group mb-3");
         let timeBlock = $("<div>").addClass("input-group-prepend time-block");
-            let hour = moment(9, "h").format("ha");
+            let hour = moment(i, "HH").format("ha");
             let span = $("<span>").addClass("input-group-text hour").text(hour);
             timeBlock.append(span);
         let textArea = $("<input>").attr("type", "text").addClass("form-control textarea")
@@ -25,22 +26,12 @@ function renderTimeBlocks() {
             buttonDiv.append(saveButton);
         row.append(timeBlock, textArea, buttonDiv);
     container.append(row);
+    }       
 }
 
 
+
 renderTimeBlocks()
-
-
-
-
-
-
-
-
-
-
-
-
 
 setInterval(displayDay, 1000);
 
