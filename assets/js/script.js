@@ -8,17 +8,13 @@ let container = $(".container");
 function displayDay() {
     let day = moment().format("dddd, Do MMMM YYYY")
     currentDay.text(day);
-    console.log(day);
 }
 
 function setColor(element) {
     let textAreaID = element.attr("id");
     let textAreaNum = parseInt(textAreaID);
-    console.log("textAreaNum: " + textAreaNum);
-    console.log(typeof textAreaNum);
-    let currentHour = moment().format("Ha");
+    let currentHour = moment().format("H:mm");
     let currentHourNum = parseInt(currentHour);
-    console.log("currentHourNum: " + currentHourNum);
 
     if (textAreaNum < currentHourNum) {
         element.addClass("past");
@@ -33,11 +29,11 @@ function setColor(element) {
 };
 
 function renderTimeBlocks() {
-for (let i = 9; i < 24; i++) {
+for (let i = 9; i < 18; i++) {
     let row = $("<div>").addClass("row input-group mb-3");
         let timeBlock = $("<div>").addClass("input-group-prepend time-block");
             let hour = moment(i, "HH").format("ha");
-            let hour24 = moment(i, "HH").format("Ha");
+            let hour24 = moment(i, "HH").format("H:mm");
             let span = $("<span>").addClass("input-group-text hour").text(hour);
             timeBlock.append(span);
         let textArea = $("<input>").attr("type", "text").addClass("form-control textarea")
@@ -50,8 +46,26 @@ for (let i = 9; i < 24; i++) {
             buttonDiv.append(saveButton);
         row.append(timeBlock, textArea, buttonDiv);
     container.append(row);
+    
+    container.on("click", saveButton, function(event) {
+        if (textArea.val() === "") {
+            return;
+        }
+        handleSave(textArea);
+    });
     }  
    
+}
+
+function handleSave (element) {
+    let textAreaID = element.attr("id");
+    let textInput = element.val().trim();
+    if (!textInput) {
+        console.log('No input');
+        return;
+    }
+   
+    localStorage.setItem(textAreaID + " Input:", textInput)
 }
 
 renderTimeBlocks()
