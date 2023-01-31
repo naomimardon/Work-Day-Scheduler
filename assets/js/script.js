@@ -6,7 +6,7 @@ let container = $(".container");
 
 //function to set the day in the jumbotron
 function displayDay() {
-    let day = moment().format("dddd, Do MMMM YYYY")
+    let day = moment().format("dddd, Do MMMM YYYY");
     currentDay.text(day);
 }
 
@@ -31,12 +31,8 @@ function setColor(element) {
 function handleSave (element) {
     let textAreaID = element.attr("id");
     let textInput = element.val().trim();
-    if (!textInput) {
-        console.log('No input');
-        return;
-    }
 
-    localStorage.setItem(textAreaID, textInput)
+    localStorage.setItem(textAreaID, textInput);
 };
 
 function renderTimeBlocks() {
@@ -50,7 +46,7 @@ for (let i = 9; i < 18; i++) {
 
         let textArea = $("<input>").attr("type", "text").addClass("form-control textarea")
             .attr("placeholder", "Enter task here").attr("aria-label", "Enter task here")
-            .attr("aria-describedby", "button-addon2").attr("id", hour24);
+            .attr("aria-describedby", "button-addon2").attr("id", hour24).val(localStorage.getItem(hour24));
             
             setInterval(setColor, 1000, textArea);
 
@@ -78,8 +74,6 @@ for (let i = 9; i < 18; i++) {
 renderTimeBlocks();
 
 setInterval(displayDay, 1000);
-
-
 
 });
 
