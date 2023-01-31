@@ -4,9 +4,6 @@ $(function(){
 let currentDay = $("#currentDay");
 let container = $(".container");
 
-//empty array to store task inputs
-let taskInputsArray = [];
-
 //function to set the day in the jumbotron
 function displayDay() {
     let day = moment().format("dddd, Do MMMM YYYY")
@@ -31,22 +28,15 @@ function setColor(element) {
     };
 };
 
-
-function storeTaskInputs (element) {
-    localStorage.setItem("taskInputsArray", JSON.stringify(element));
-};
-
 function handleSave (element) {
     let textAreaID = element.attr("id");
     let textInput = element.val().trim();
     if (!textInput) {
         console.log('No input');
         return;
-    };
+    }
 
-    let taskInputs = [textAreaID, textInput];
-    taskInputsArray.push(taskInputs);
-    storeTaskInputs(taskInputsArray);
+    localStorage.setItem(textAreaID, textInput)
 };
 
 function renderTimeBlocks() {
@@ -57,15 +47,20 @@ for (let i = 9; i < 18; i++) {
             let hour24 = moment(i, "HH").format("H:mm");
             let span = $("<span>").addClass("input-group-text hour").text(hour);
             timeBlock.append(span);
+
         let textArea = $("<input>").attr("type", "text").addClass("form-control textarea")
             .attr("placeholder", "Enter task here").attr("aria-label", "Enter task here")
             .attr("aria-describedby", "button-addon2").attr("id", hour24);
+            
             setInterval(setColor, 1000, textArea);
+
         let buttonDiv = $("<div>").addClass("input-group-append");
             let saveButton = $("<button>").addClass("btn btn-outline-secondary saveBtn")
                 .attr("type", "button").attr("id", "button-addon2").text("Save");
             buttonDiv.append(saveButton);
+
         row.append(timeBlock, textArea, buttonDiv);
+
     container.append(row);
     
     saveButton.on("click", function() {
@@ -73,14 +68,18 @@ for (let i = 9; i < 18; i++) {
             return;
         }
         handleSave(textArea);
-    });
+        });
     };
+
+
    
 };
 
 renderTimeBlocks();
 
 setInterval(displayDay, 1000);
+
+
 
 });
 
