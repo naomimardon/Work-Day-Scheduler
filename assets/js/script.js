@@ -4,6 +4,9 @@ $(function(){
 let currentDay = $("#currentDay");
 let container = $(".container");
 
+//empty array to store task inputs
+let taskInputsArray = [];
+
 //function to set the day in the jumbotron
 function displayDay() {
     let day = moment().format("dddd, Do MMMM YYYY")
@@ -28,6 +31,25 @@ function setColor(element) {
     };
 };
 
+
+function storeTaskInputs (element) {
+    localStorage.setItem("taskInputsArray", JSON.stringify(element));
+};
+
+function handleSave (element) {
+    let textAreaID = element.attr("id");
+    let textInput = element.val().trim();
+    if (!textInput) {
+        console.log('No input');
+        return;
+    };
+
+    let taskInputs = [textAreaID, textInput];
+    taskInputsArray.push(taskInputs);
+    let uniqueTasks = [...new Set(taskInputsArray)];
+    storeTaskInputs(uniqueTasks);
+};
+
 function renderTimeBlocks() {
 for (let i = 9; i < 18; i++) {
     let row = $("<div>").addClass("row input-group mb-3");
@@ -47,28 +69,17 @@ for (let i = 9; i < 18; i++) {
         row.append(timeBlock, textArea, buttonDiv);
     container.append(row);
     
-    container.on("click", saveButton, function(event) {
+    saveButton.on("click", function() {
         if (textArea.val() === "") {
             return;
         }
         handleSave(textArea);
     });
-    }  
+    };
    
-}
+};
 
-function handleSave (element) {
-    let textAreaID = element.attr("id");
-    let textInput = element.val().trim();
-    if (!textInput) {
-        console.log('No input');
-        return;
-    }
-   
-    localStorage.setItem(textAreaID + " Input:", textInput)
-}
-
-renderTimeBlocks()
+renderTimeBlocks();
 
 setInterval(displayDay, 1000);
 
