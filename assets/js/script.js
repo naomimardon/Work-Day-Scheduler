@@ -46,8 +46,7 @@ function handleSave (element) {
 
     let taskInputs = [textAreaID, textInput];
     taskInputsArray.push(taskInputs);
-    let uniqueTasks = [...new Set(taskInputsArray)];
-    storeTaskInputs(uniqueTasks);
+    storeTaskInputs(taskInputsArray);
 };
 
 function renderTimeBlocks() {
